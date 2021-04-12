@@ -11,7 +11,7 @@ router.post("/signup-with-recaptcha", (req, res) => {
   if (!req.body.token) {
     return res.status(400).json({ error: "reCaptcha token is missing" });
   }
-  const googleVerifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.reCaptchaSecret}&response=${req.body.token}`;
+  const googleVerifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=6LfyBKMaAAAAAGuFNvRMXhvbCVvgA6ujyXddIgL4&response=${req.body.token}`;
   //make request to verify url
   axios.post(googleVerifyUrl)
   .then((response)=>{
