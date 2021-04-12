@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import ReCAPTCHA from "react-google-recaptcha";
 import {AppConfig} from "../configs"
+import axios from 'axios'
 
 
 const FormContainer = styled.div`
@@ -25,8 +26,8 @@ const ReCAPTCHA_Container = styled.div`
 const Form = () => {
   const [token, setToken] = useState(null);
   const [expired, setExpired] = useState(false);
-  const [error, setError] = useState("");
   const recaptchaRef = useRef();
+  const emailRef = useRef();
   const verificationHandler = (token) => {
     //recaptcha expired
     if (token === null) {
@@ -38,24 +39,43 @@ const Form = () => {
     const recaptchaValue = recaptchaRef.current.getValue();
     setToken(recaptchaValue);
   };
+
   const submissionHandler = (event) =>{
     event.preventDefault();
+    console.log(token);
     if(!token){
       alert('please verify captcha')
       return;
     }
-       setError("");
+    alert(AppConfig.api + 'users/signup-with-recaptcha');
+    // const customHeaders = {
+    //     'content-type': 'application/json',
+    //   };
+       axios.post(AppConfig.api + 'users/signup-with-recaptcha',{
+           token,
+           email_value: emailRef.current.value,
+       })
+       .then((res)=>{
+           if(res.data && res.data.success){
+               alert('signup success')
+           }else{
+               alert('invalid captcha...please try again') 
+                console.log(res.data.error);
+           }
+       }) 
+       .catch((e)=>{
+           console.log(e);
+       }) 
      recaptchaRef.current.reset();
-
+    emailRef.current.value='';   
+    setToken(null);
   }
-  useEffect(() => {
-    console.log(token);
-  }, [setToken]);
+ 
   return (
     <FormContainer id="test-form">
       <div className="app-page">
         <form onSubmit={(event) => submissionHandler(event)}>
-          <input type="text" placeholder="Enter your email" />
+          <input type="text" placeholder="Enter your email" ref={emailRef}/>
           <ReCAPTCHA_Container id='grecaptcha-wrapper'>
           {expired && <div id='captcha-expired-info'>
             Captcha expired. Please try again

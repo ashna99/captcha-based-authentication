@@ -19,12 +19,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+//TODO test
+const cors= require('cors');
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/users', cors(), usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+  console.log('create error 404');
   next(createError(404));
+
 });
 
 // error handler
