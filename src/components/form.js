@@ -48,7 +48,7 @@ const Form = () => {
       alert('please verify captcha')
       return;
     }
-    alert(AppConfig.api + 'users/signup-with-recaptcha');
+    // alert(AppConfig.api + 'users/signup-with-recaptcha');
  
        axios.post(AppConfig.api + 'users/signup-with-recaptcha',{
            token,
