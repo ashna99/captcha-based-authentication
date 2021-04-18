@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 //body-parser deprecated... middlewares are now part of express as methods 
 app.json();
-app.urlencoded({ extended: false });
+app.urlencoded({ extended: true });
 console.log('hi');
 router.post("/signup-with-recaptcha", (req, res) => {
   console.log(req.body);

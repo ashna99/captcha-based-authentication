@@ -48,7 +48,7 @@ const Form = () => {
       alert('please verify captcha')
       return;
     }
-    // alert(AppConfig.api + 'users/signup-with-recaptcha');
+    alert(AppConfig.api + 'users/signup-with-recaptcha');
  
        axios.post(AppConfig.api + 'users/signup-with-recaptcha',{
            token,
@@ -62,13 +62,17 @@ const Form = () => {
             //    alert('invalid captcha...please try again') 
                 console.log(res.data.error);
            }
+           recaptchaRef.current.reset();
+           emailRef.current.value='';   
+           setToken(null);
        }) 
        .catch((e)=>{
            console.log(e);
+           recaptchaRef.current.reset();
+           emailRef.current.value='';   
+           setToken(null);
        }) 
-     recaptchaRef.current.reset();
-    emailRef.current.value='';   
-    setToken(null);
+ 
   }
  
   return (
